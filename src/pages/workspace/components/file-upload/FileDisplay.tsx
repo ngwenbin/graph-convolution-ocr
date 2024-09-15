@@ -18,7 +18,7 @@ export function FileDisplay({ file, onClick }: FileDisplayProps) {
 
   return (
     <div
-      className="w-[100px] h-[100px] border rounded hover:border-black"
+      className="w-[100px] h-[100px] border rounded hover:border-gray-700 cursor-pointer"
       onClick={handleClick}
     >
       <img src={src} className="object-contain w-full h-full" />

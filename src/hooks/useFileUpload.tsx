@@ -7,7 +7,6 @@ export function useFileUpload() {
 
   const handleOnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-
     if (files) {
       const formattedFiles: ImageFile[] = Array.from(files).map((fileItem) => ({
         id: nanoid(),

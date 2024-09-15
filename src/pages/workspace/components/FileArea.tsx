@@ -2,6 +2,7 @@ import { useFileUpload } from "@/hooks/useFileUpload";
 import { useRef, useState } from "react";
 import { FileDisplay, ImageFile } from "./file-upload/FileDisplay";
 import { PlusIcon } from "lucide-react";
+import { ImageView } from "./ImageVIew";
 
 const ACCEPTABLE_FILE_UPLOAD_FORMATS = [
   "image/png",
@@ -10,7 +11,7 @@ const ACCEPTABLE_FILE_UPLOAD_FORMATS = [
 ];
 
 export function FileArea() {
-  const [selectedFileId, setSelectedFileId] = useState<string>();
+  const [selectedFile, setSelectedFile] = useState<ImageFile>();
   const { onChange, fileList } = useFileUpload();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -22,12 +23,12 @@ export function FileArea() {
   };
 
   const handleOnFileSelect = (file: ImageFile) => {
-    setSelectedFileId(file.id);
+    setSelectedFile(file);
   };
 
   return (
-    <div className="flex flex-col grow gap-2">
-      <div>
+    <div className="flex flex-col grow gap-2 min-h-0">
+      <div className="flex">
         <input
           ref={inputRef}
           hidden
@@ -37,7 +38,7 @@ export function FileArea() {
           onChange={onChange}
         />
         <div
-          className="flex items-center justify-center w-[100px] h-[100px] border rounded border-dotted hover:border-gray-700 cursor-pointer mr-2"
+          className="flex items-center justify-center w-[100px] h-[100px] border border-gray-300 rounded border-dashed hover:border-gray-700 cursor-pointer mr-2"
           onClick={handleFileUploadClick}
         >
           <div className="flex items-center">
@@ -55,8 +56,12 @@ export function FileArea() {
           ))}
         </div>
       </div>
-      <div className="flex grow items-center justify-center rounded border">
-        {selectedFileId ?? "Upload or select an image"}
+      <div className="relative flex min-h-0 h-full items-center justify-center rounded border border-gray-300">
+        {selectedFile ? (
+          <ImageView file={selectedFile} />
+        ) : (
+          "Upload or select an image"
+        )}
       </div>
     </div>
   );
