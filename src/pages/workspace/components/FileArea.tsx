@@ -58,7 +58,21 @@ export function FileArea() {
       </div>
       <div className="relative flex min-h-0 h-full items-center justify-center rounded border border-gray-300">
         {selectedFile ? (
-          <ImageView file={selectedFile} />
+          <ImageView
+            file={selectedFile}
+            boundaryBoxes={[
+              {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 50,
+                x3: 50,
+                y3: 50,
+                x4: 50,
+                y4: 0,
+              },
+            ]}
+          />
         ) : (
           "Upload or select an image"
         )}
