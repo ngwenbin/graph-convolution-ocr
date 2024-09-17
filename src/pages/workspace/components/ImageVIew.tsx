@@ -9,11 +9,12 @@ interface ImageViewProps {
 }
 
 export function ImageView({ file }: ImageViewProps) {
-  const [image] = useImage(file.src);
-
+  const { image, dimensions } = useImage(file.src);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [containerHeight, setContainerHeight] = useState<number>(0);
+
+  const { width: imageWidth, height: imageHeight } = dimensions ?? {};
 
   const handleResize = useCallback(() => {
     const container = containerRef.current;
@@ -35,6 +36,9 @@ export function ImageView({ file }: ImageViewProps) {
     };
   }, [handleResize]);
 
+  const posX = imageWidth ? (containerWidth - imageWidth) / 2 : 0;
+  const posY = imageHeight ? (containerHeight - imageHeight) / 2 : 0;
+
   return (
     <>
       <Button className="absolute z-10 top-1 right-1" variant="outline">
@@ -43,7 +47,7 @@ export function ImageView({ file }: ImageViewProps) {
       <div className="w-full h-full" ref={containerRef}>
         <Stage width={containerWidth} height={containerHeight} draggable>
           <Layer>
-            <Image image={image ?? undefined} />
+            <Image image={image ?? undefined} x={posX} y={posY} />
           </Layer>
         </Stage>
       </div>

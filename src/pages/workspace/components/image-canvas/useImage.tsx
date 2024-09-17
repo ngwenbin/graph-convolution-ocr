@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 
+interface ImageDimensions {
+  width: number;
+  height: number;
+}
+
 export function useImage(url: string) {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const [dimensions, setDimensions] = useState<ImageDimensions>();
 
   useEffect(
     function () {
@@ -11,6 +17,10 @@ export function useImage(url: string) {
 
       function onload() {
         setImage(img);
+        setDimensions({
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        });
       }
 
       function onerror() {
@@ -28,5 +38,5 @@ export function useImage(url: string) {
     [url]
   );
 
-  return [image];
+  return { image, dimensions };
 }
