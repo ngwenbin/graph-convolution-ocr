@@ -2,7 +2,7 @@ import { useFileUpload } from "@/hooks/useFileUpload";
 import { useRef, useState } from "react";
 import { FileDisplay, ImageFile } from "./file-upload/FileDisplay";
 import { PlusIcon } from "lucide-react";
-import { ImageView } from "./ImageVIew";
+import { ImageView } from "./image-canvas/ImageView";
 
 const ACCEPTABLE_FILE_UPLOAD_FORMATS = [
   "image/png",
@@ -60,17 +60,13 @@ export function FileArea() {
         {selectedFile ? (
           <ImageView
             file={selectedFile}
-            boundaryBoxes={[
-              {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 50,
-                x3: 50,
-                y3: 50,
-                x4: 50,
-                y4: 0,
-              },
+            boundaryPolys={[
+              [
+                { x: 0, y: 0 },
+                { x: 0, y: 50 },
+                { x: 50, y: 50 },
+                { x: 50, y: 0 },
+              ],
             ]}
           />
         ) : (

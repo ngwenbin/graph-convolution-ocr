@@ -1,27 +1,17 @@
-import { ImageFile } from "./file-upload/FileDisplay";
+import { ImageFile } from "../file-upload/FileDisplay";
 import { Button } from "@/components/core/button";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Stage, Layer, Image, Line } from "react-konva";
-import { useImage } from "./image-canvas/useImage";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Stage, Layer, Image } from "react-konva";
+import { useImage } from "./useImage";
 import Konva from "konva";
-
-type BoundaryBoxType = {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  x3: number;
-  y3: number;
-  x4: number;
-  y4: number;
-};
+import { BoundaryPoly, BoundaryPolyType } from "./BoundaryPoly";
 
 interface ImageViewProps {
   file: ImageFile;
-  boundaryBoxes?: BoundaryBoxType[];
+  boundaryPolys: BoundaryPolyType[];
 }
 
-export function ImageView({ file, boundaryBoxes }: ImageViewProps) {
+export function ImageView({ file, boundaryPolys }: ImageViewProps) {
   const { image, dimensions } = useImage(file.src);
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<Konva.Stage>(null);
@@ -63,13 +53,6 @@ export function ImageView({ file, boundaryBoxes }: ImageViewProps) {
   const posX = imageWidth ? (containerWidth - imageWidth) / 2 : 0;
   const posY = imageHeight ? (containerHeight - imageHeight) / 2 : 0;
 
-  const boxes: number[][] = useMemo(() => {
-    if (boundaryBoxes) {
-      return boundaryBoxes.map((boundary) => Object.values(boundary));
-    }
-    return [];
-  }, [boundaryBoxes]);
-
   return (
     <>
       <Button
@@ -89,10 +72,10 @@ export function ImageView({ file, boundaryBoxes }: ImageViewProps) {
           <Layer>
             <Image stroke="red" image={image ?? undefined} x={posX} y={posY} />
           </Layer>
-          {boxes.length > 0 ? (
+          {boundaryPolys.length > 0 ? (
             <Layer x={posX} y={posY}>
-              {boxes.map((item) => (
-                <Line points={item} stroke="green" strokeWidth={1} closed />
+              {boundaryPolys.map((item) => (
+                <BoundaryPoly poly={item} />
               ))}
             </Layer>
           ) : (
